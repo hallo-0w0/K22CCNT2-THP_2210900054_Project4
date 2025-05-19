@@ -213,8 +213,27 @@
     <script src="./assets/js/dashboard.js"></script>
     <script>
         // Tải header và sidebar
-        fetch('./templates/header.html').then(res => res.text()).then(data => document.getElementById('header').innerHTML = data);
-        fetch('./templates/sidebar.html').then(res => res.text()).then(data => document.getElementById('sidebar').innerHTML = data);
+        fetch('./templates/header.html')
+            .then(res => {
+                if (!res.ok) throw new Error('Không tìm thấy header.html');
+                return res.text();
+            })
+            .then(data => document.getElementById('header').innerHTML = data)
+            .catch(err => console.error('Lỗi tải header:', err.message));
+
+        fetch('./templates/sidebar.html')
+            .then(res => {
+                if (!res.ok) throw new Error('Không tìm thấy sidebar.html');
+                return res.text();
+            })
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+                // Khởi tạo lại sự kiện sau khi sidebar được tải
+                if (window.initializeSidebarEvents) {
+                    initializeSidebarEvents();
+                }
+            })
+            .catch(err => console.error('Lỗi tải sidebar:', err.message));
     </script>
 </body>
 </html>
