@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Phòng Ban</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div id="sidebar"></div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div id="header"></div>
+            
+            <div class="dashboard-title">
+                <h2>Danh Sách Phòng Ban</h2>
+                <a href="./add.html" class="view-all" style="margin-left: 20px;">
+                    <i class="fas fa-plus"></i> Thêm Phòng Ban
+                </a>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">
+                    <h3>Danh sách phòng ban</h3>
+                    <div class="search-bar" style="width: 250px;">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Tìm kiếm phòng ban..." id="departmentSearch">
+                    </div>
+                </div>
+                <div class="employees-list">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tên phòng ban</th>
+                                <th>Trưởng phòng</th>
+                                <th>Số lượng nhân viên</th>
+                                <th>Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="departmentTableBody">
+                            <tr>
+                                <td>Phòng Kỹ thuật</td>
+                                <td>Nguyễn Thành</td>
+                                <td>30</td>
+                                <td>
+                                    <a href="./edit.html?id=1" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
+                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" id="delete-1"><i class="fas fa-trash"></i> Xóa</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Phòng Nhân sự</td>
+                                <td>Trần Lan</td>
+                                <td>15</td>
+                                <td>
+                                    <a href="./edit.html?id=2" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
+                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" id="delete-2"><i class="fas fa-trash"></i> Xóa</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Phòng Marketing</td>
+                                <td>Ngô Huy</td>
+                                <td>25</td>
+                                <td>
+                                    <a href="./edit.html?id=3" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
+                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" id="delete-3"><i class="fas fa-trash"></i> Xóa</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="view-more" style="text-align: right; margin-top: 15px;">
+                    <a href="#">Xem thêm <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../assets/js/dashboard.js"></script>
+    <script>
+        // Hàm chuẩn hóa chuỗi để bỏ dấu
+        function removeDiacritics(str) {
+            return str
+                .normalize('NFD') // Tách ký tự thành ký tự cơ bản và dấu
+                .replace(/[\u0300-\u036f]/g, '') // Xóa các ký tự dấu
+                .replace(/đ/g, 'd') // Thay 'đ' thành 'd'
+                .replace(/Đ/g, 'D'); // Thay 'Đ' thành 'D'
+        }
+
+        // Tải header và sidebar
+        fetch('../templates/header.html')
+            .then(res => {
+                if (!res.ok) throw new Error('Không tìm thấy header.html');
+                return res.text();
+            })
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+                // Ẩn thanh tìm kiếm trong header trên trang này
+                const globalSearchContainer = document.getElementById('globalSearchContainer');
+                if (globalSearchContainer) {
+                    globalSearchContainer.style.display = 'none';
+                }
+            })
+            .catch(err => console.error('Lỗi tải header:', err.message));
+
+        fetch('../templates/sidebar.html')
+            .then(res => {
+                if (!res.ok) throw new Error('Không tìm thấy sidebar.html');
+                return res.text();
+            })
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+                // Khởi tạo lại sự kiện sau khi sidebar được tải
+                if (window.initializeSidebarEvents) {
+                    initializeSidebarEvents();
+                }
+            })
+            .catch(err => console.error('Lỗi tải sidebar:', err.message));
+
+        // Chức năng tìm kiếm
+        document.getElementById('departmentSearch').addEventListener('input', function() {
+            const keyword = removeDiacritics(this.value.trim().toLowerCase());
+            const rows = document.querySelectorAll('tbody tr');
+
+            rows.forEach(row => {
+                const departmentName = removeDiacritics(row.cells[0].textContent.toLowerCase()); // Cột Tên phòng ban
+                const manager = removeDiacritics(row.cells[1].textContent.toLowerCase()); // Cột Trưởng phòng
+
+                // Kiểm tra nếu từ khóa có trong Tên phòng ban hoặc Trưởng phòng
+                if (
+                    departmentName.includes(keyword) ||
+                    manager.includes(keyword)
+                ) {
+                    row.style.display = 'table-row'; // Hiển thị hàng khớp
+                } else {
+                    row.style.display = 'none'; // Ẩn hàng không khớp
+                }
+            });
+        });
+
+        // Chức năng xóa phòng ban (giả lập)
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const departmentId = this.id.split('-')[1]; // Lấy id từ id="delete-1" -> 1
+                const row = this.closest('tr'); // Lấy hàng <tr> chứa nút "Xóa"
+
+                // Hiển thị thông báo xác nhận
+                if (confirm('Bạn có chắc chắn muốn xóa phòng ban này?')) {
+                    // Giả lập xóa phòng ban
+                    alert('Xóa phòng ban thành công! (Đây là thông báo giả lập)');
+
+                    // Xóa hàng khỏi bảng
+                    row.remove();
+
+                    // TODO: Trong tương lai, thay thế bằng gọi API để xóa phòng ban thực sự
+                    // Ví dụ:
+                    // fetch(`/api/departments/${departmentId}`, { method: 'DELETE' })
+                    //     .then(res => res.json())
+                    //     .then(data => {
+                    //         alert(data.message);
+                    //         row.remove();
+                    //     })
+                    //     .catch(err => console.error('Lỗi xóa phòng ban:', err));
+                }
+            });
+        });
+    </script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+        }
+        .status {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        .status.active {
+            background-color: #2ecc71;
+            color: white;
+        }
+        .status.inactive {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .action-link {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #3498db;
+        }
+        .action-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</body>
+</html>

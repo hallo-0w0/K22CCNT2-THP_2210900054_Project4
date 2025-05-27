@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Phòng Ban</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div id="sidebar"></div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div id="header"></div>
+            
+            <div class="dashboard-title">
+                <h2>Thêm Phòng Ban</h2>
+                <a href="./list.html" class="view-all" style="margin-left: 20px;">
+                    <i class="fas fa-arrow-left"></i> Quay lại
+                </a>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">
+                    <h3>Thông tin phòng ban</h3>
+                </div>
+                <div class="employees-form">
+                    <div class="form-group">
+                        <label for="departmentName">Tên phòng ban <span style="color: #e74c3c;">*</span></label>
+                        <input type="text" id="departmentName" placeholder="Nhập tên phòng ban" required>
+                        <span class="error-message" id="departmentNameError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="manager">Trưởng phòng</label>
+                        <select id="manager">
+                            <option value="">Chọn trưởng phòng</option>
+                            <option value="Nguyễn Thành">Nguyễn Thành</option>
+                            <option value="Trần Lan">Trần Lan</option>
+                            <option value="Ngô Huy">Ngô Huy</option>
+                            <option value="Vũ Phương">Vũ Phương</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeCount">Số lượng nhân viên</label>
+                        <input type="number" id="employeeCount" placeholder="Nhập số lượng nhân viên" min="0">
+                    </div>
+                    <div class="form-actions">
+                        <button class="action-btn" id="submitBtn">
+                            <div class="action-icon blue-bg">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <span>Thêm Phòng Ban</span>
+                        </button>
+                        <button class="action-btn" onclick="window.location.href='./list.html'">
+                            <div class="action-icon red-bg">
+                                <i class="fas fa-times"></i>
+                            </div>
+                            <span>Hủy</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../assets/js/dashboard.js"></script>
+    <script>
+        // Tải header và sidebar
+        fetch('../templates/header.html')
+            .then(res => {
+                if (!res.ok) throw new Error('Không tìm thấy header.html');
+                return res.text();
+            })
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+                // Ẩn thanh tìm kiếm trong header trên trang này
+                const globalSearchContainer = document.getElementById('globalSearchContainer');
+                if (globalSearchContainer) {
+                    globalSearchContainer.style.display = 'none';
+                }
+            })
+            .catch(err => console.error('Lỗi tải header:', err.message));
+
+        fetch('../templates/sidebar.html')
+            .then(res => {
+                if (!res.ok) throw new Error('Không tìm thấy sidebar.html');
+                return res.text();
+            })
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+                if (window.initializeSidebarEvents) {
+                    initializeSidebarEvents();
+                }
+            })
+            .catch(err => console.error('Lỗi tải sidebar:', err.message));
+
+        // Validation form
+        document.getElementById('submitBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            let isValid = true;
+
+            // Reset thông báo lỗi
+            document.querySelectorAll('.error-message').forEach(error => error.textContent = '');
+
+            // Kiểm tra tên phòng ban
+            const departmentName = document.getElementById('departmentName').value.trim();
+            if (!departmentName) {
+                document.getElementById('departmentNameError').textContent = 'Tên phòng ban là bắt buộc';
+                isValid = false;
+            }
+
+            if (isValid) {
+                alert('Thêm phòng ban thành công! (Đây là thông báo giả lập)');
+                window.location.href = './list.html';
+            }
+        });
+    </script>
+    <style>
+        .employees-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #3498db;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+    </style>
+</body>
+</html>

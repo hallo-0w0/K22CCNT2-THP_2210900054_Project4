@@ -28,7 +28,7 @@
                     <h3>Danh sách nhân viên</h3>
                     <div class="search-bar" style="width: 250px;">
                         <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Tìm kiếm nhân viên..." id="employeeSearch">
+                        <input type="text" placeholder="Tìm kiếm nhân viên..." id="listSearch">
                     </div>
                 </div>
                 <div class="employees-list">
@@ -42,7 +42,7 @@
                                 <th>Hành Động</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="employeeTableBody">
                             <tr>
                                 <td>Nguyễn Thành</td>
                                 <td>Phòng Kỹ thuật</td>
@@ -50,7 +50,7 @@
                                 <td><span class="status active">Hoạt động</span></td>
                                 <td>
                                     <a href="./edit.html?id=1" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
-                                    <a href="#" class="action-link" style="color: #e74c3c;"><i class="fas fa-trash"></i> Xóa</a>
+                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" id="delete-1"><i class="fas fa-trash"></i> Xóa</a>
                                 </td>
                             </tr>
                             <tr>
@@ -60,7 +60,7 @@
                                 <td><span class="status active">Hoạt động</span></td>
                                 <td>
                                     <a href="./edit.html?id=2" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
-                                    <a href="#" class="action-link" style="color: #e74c3c;"><i class="fas fa-trash"></i> Xóa</a>
+                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" id="delete-2"><i class="fas fa-trash"></i> Xóa</a>
                                 </td>
                             </tr>
                             <tr>
@@ -70,7 +70,7 @@
                                 <td><span class="status inactive">Nghỉ phép</span></td>
                                 <td>
                                     <a href="./edit.html?id=3" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
-                                    <a href="#" class="action-link" style="color: #e74c3c;"><i class="fas fa-trash"></i> Xóa</a>
+                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" id="delete-3"><i class="fas fa-trash"></i> Xóa</a>
                                 </td>
                             </tr>
                             <tr>
@@ -80,7 +80,7 @@
                                 <td><span class="status active">Hoạt động</span></td>
                                 <td>
                                     <a href="./edit.html?id=4" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
-                                    <a href="#" class="action-link" style="color: #e74c3c;"><i class="fas fa-trash"></i> Xóa</a>
+                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" id="delete-4"><i class="fas fa-trash"></i> Xóa</a>
                                 </td>
                             </tr>
                         </tbody>
@@ -95,13 +95,29 @@
     
     <script src="../assets/js/dashboard.js"></script>
     <script>
+        // Hàm chuẩn hóa chuỗi để bỏ dấu
+        function removeDiacritics(str) {
+            return str
+                .normalize('NFD') // Tách ký tự thành ký tự cơ bản và dấu
+                .replace(/[\u0300-\u036f]/g, '') // Xóa các ký tự dấu
+                .replace(/đ/g, 'd') // Thay 'đ' thành 'd'
+                .replace(/Đ/g, 'D'); // Thay 'Đ' thành 'D'
+        }
+
         // Tải header và sidebar
         fetch('../templates/header.html')
             .then(res => {
                 if (!res.ok) throw new Error('Không tìm thấy header.html');
                 return res.text();
             })
-            .then(data => document.getElementById('header').innerHTML = data)
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+                // Ẩn thanh tìm kiếm trong header trên trang này
+                const globalSearchContainer = document.getElementById('globalSearchContainer');
+                if (globalSearchContainer) {
+                    globalSearchContainer.style.display = 'none';
+                }
+            })
             .catch(err => console.error('Lỗi tải header:', err.message));
 
         fetch('../templates/sidebar.html')
@@ -117,6 +133,57 @@
                 }
             })
             .catch(err => console.error('Lỗi tải sidebar:', err.message));
+
+        // Chức năng tìm kiếm
+        document.getElementById('listSearch').addEventListener('input', function() {
+            const keyword = removeDiacritics(this.value.trim().toLowerCase());
+            const rows = document.querySelectorAll('tbody tr');
+
+            rows.forEach(row => {
+                const fullName = removeDiacritics(row.cells[0].textContent.toLowerCase()); // Cột Họ Tên
+                const department = removeDiacritics(row.cells[1].textContent.toLowerCase()); // Cột Phòng Ban
+                const status = removeDiacritics(row.cells[3].textContent.toLowerCase()); // Cột Trạng Thái
+
+                // Kiểm tra nếu từ khóa có trong Họ Tên, Phòng Ban hoặc Trạng Thái
+                if (
+                    fullName.includes(keyword) ||
+                    department.includes(keyword) ||
+                    status.includes(keyword)
+                ) {
+                    row.style.display = 'table-row'; // Hiển thị hàng khớp
+                } else {
+                    row.style.display = 'none'; // Ẩn hàng không khớp
+                }
+            });
+        });
+
+        // Chức năng xóa nhân viên (giả lập)
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const employeeId = this.id.split('-')[1]; // Lấy id từ id="delete-1" -> 1
+                const row = this.closest('tr'); // Lấy hàng <tr> chứa nút "Xóa"
+
+                // Hiển thị thông báo xác nhận
+                if (confirm('Bạn có chắc chắn muốn xóa nhân viên này?')) {
+                    // Giả lập xóa nhân viên
+                    alert('Xóa nhân viên thành công! (Đây là thông báo giả lập)');
+
+                    // Xóa hàng khỏi bảng
+                    row.remove();
+
+                    // TODO: Trong tương lai, thay thế bằng gọi API để xóa nhân viên thực sự
+                    // Ví dụ:
+                    // fetch(`/api/employees/${employeeId}`, { method: 'DELETE' })
+                    //     .then(res => res.json())
+                    //     .then(data => {
+                    //         alert(data.message);
+                    //         row.remove();
+                    //     })
+                    //     .catch(err => console.error('Lỗi xóa nhân viên:', err));
+                }
+            });
+        });
     </script>
     <style>
         table {
