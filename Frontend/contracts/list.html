@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Hợp Đồng</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div id="sidebar"></div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div id="header"></div>
+            
+            <div class="dashboard-title">
+                <h2>Danh Sách Hợp Đồng</h2>
+                <a href="./add.html" class="view-all" style="margin-left: 20px;">
+                    <i class="fas fa-plus"></i> Thêm Hợp Đồng
+                </a>
+            </div>
+            
+            <div class="panel">
+                <div class="panel-header">
+                    <h3>Danh sách hợp đồng</h3>
+                    <div class="search-bar" style="width: 250px;">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Tìm kiếm hợp đồng..." id="contractSearch">
+                    </div>
+                </div>
+                <div class="employees-list">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Họ Tên</th>
+                                <th>Phòng Ban</th>
+                                <th>Loại Hợp Đồng</th>
+                                <th>Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contractTableBody">
+                            <tr class="employee-row" data-employee-id="1">
+                                <td>Nguyễn Thành</td>
+                                <td>Phòng Kỹ thuật</td>
+                                <td>Toàn thời gian</td>
+                                <td>
+                                    <a href="#" class="action-link toggle-details"><i class="fas fa-eye"></i> Xem chi tiết</a>
+                                </td>
+                            </tr>
+                            <tr class="details-row" style="display: none;">
+                                <td colspan="4">
+                                    <table class="details-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Số Hợp Đồng</th>
+                                                <th>Ngày Ký</th>
+                                                <th>Ngày Hết Hạn</th>
+                                                <th>Loại Hợp Đồng</th>
+                                                <th>Lương Cơ Bản</th>
+                                                <th>Trạng Thái</th>
+                                                <th>Hành Động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>HC001</td>
+                                                <td>01/05/2025</td>
+                                                <td>30/04/2026</td>
+                                                <td>Toàn thời gian</td>
+                                                <td>10,000,000 VNĐ</td>
+                                                <td><span class="status active">Còn hiệu lực</span></td>
+                                                <td>
+                                                    <a href="./edit.html?recordId=1-1" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
+                                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" data-record-id="1-1"><i class="fas fa-trash"></i> Xóa</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="employee-row" data-employee-id="2">
+                                <td>Trần Lan</td>
+                                <td>Phòng Nhân sự</td>
+                                <td>Thử việc</td>
+                                <td>
+                                    <a href="#" class="action-link toggle-details"><i class="fas fa-eye"></i> Xem chi tiết</a>
+                                </td>
+                            </tr>
+                            <tr class="details-row" style="display: none;">
+                                <td colspan="4">
+                                    <table class="details-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Số Hợp Đồng</th>
+                                                <th>Ngày Ký</th>
+                                                <th>Ngày Hết Hạn</th>
+                                                <th>Loại Hợp Đồng</th>
+                                                <th>Lương Cơ Bản</th>
+                                                <th>Trạng Thái</th>
+                                                <th>Hành Động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>HC002</td>
+                                                <td>15/04/2025</td>
+                                                <td>14/04/2025</td>
+                                                <td>Thử việc</td>
+                                                <td>5,000,000 VNĐ</td>
+                                                <td><span class="status inactive">Hết hạn</span></td>
+                                                <td>
+                                                    <a href="./edit.html?recordId=2-1" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
+                                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" data-record-id="2-1"><i class="fas fa-trash"></i> Xóa</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="employee-row" data-employee-id="3">
+                                <td>Ngô Huy</td>
+                                <td>Phòng Marketing</td>
+                                <td>Bán thời gian</td>
+                                <td>
+                                    <a href="#" class="action-link toggle-details"><i class="fas fa-eye"></i> Xem chi tiết</a>
+                                </td>
+                            </tr>
+                            <tr class="details-row" style="display: none;">
+                                <td colspan="4">
+                                    <table class="details-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Số Hợp Đồng</th>
+                                                <th>Ngày Ký</th>
+                                                <th>Ngày Hết Hạn</th>
+                                                <th>Loại Hợp Đồng</th>
+                                                <th>Lương Cơ Bản</th>
+                                                <th>Trạng Thái</th>
+                                                <th>Hành Động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>HC003</td>
+                                                <td>10/05/2025</td>
+                                                <td>09/05/2026</td>
+                                                <td>Bán thời gian</td>
+                                                <td>7,000,000 VNĐ</td>
+                                                <td><span class="status active">Còn hiệu lực</span></td>
+                                                <td>
+                                                    <a href="./edit.html?recordId=3-1" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
+                                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" data-record-id="3-1"><i class="fas fa-trash"></i> Xóa</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="view-more" style="text-align: right; margin-top: 15px;">
+                    <a href="#">Xem thêm <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../assets/js/dashboard.js"></script>
+    <script>
+        // Hàm chuẩn hóa chuỗi để bỏ dấu
+        function removeDiacritics(str) {
+            return str
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd')
+                .replace(/Đ/g, 'D');
+        }
+
+        // Tải header và sidebar
+        fetch('../templates/header.html')
+            .then(res => {
+                if (!res.ok) throw new Error('Không tìm thấy header.html');
+                return res.text();
+            })
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+                const globalSearchContainer = document.getElementById('globalSearchContainer');
+                if (globalSearchContainer) {
+                    globalSearchContainer.style.display = 'none';
+                }
+            })
+            .catch(err => console.error('Lỗi tải header:', err.message));
+
+        fetch('../templates/sidebar.html')
+            .then(res => {
+                if (!res.ok) throw new Error('Không tìm thấy sidebar.html');
+                return res.text();
+            })
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+                if (window.initializeSidebarEvents) {
+                    initializeSidebarEvents();
+                }
+            })
+            .catch(err => console.error('Lỗi tải sidebar:', err.message));
+
+        // Chức năng tìm kiếm
+        document.getElementById('contractSearch').addEventListener('input', function() {
+            const keyword = removeDiacritics(this.value.trim().toLowerCase());
+            const rows = document.querySelectorAll('.employee-row');
+
+            rows.forEach(row => {
+                const fullName = removeDiacritics(row.cells[0].textContent.toLowerCase());
+                const department = removeDiacritics(row.cells[1].textContent.toLowerCase());
+                const contractType = removeDiacritics(row.cells[2].textContent.toLowerCase());
+
+                const detailsRow = row.nextElementSibling;
+                const statusCells = detailsRow.querySelectorAll('.status');
+                let hasMatchingStatus = false;
+                statusCells.forEach(cell => {
+                    const status = removeDiacritics(cell.textContent.toLowerCase());
+                    if (status.includes(keyword)) {
+                        hasMatchingStatus = true;
+                    }
+                });
+
+                if (
+                    fullName.includes(keyword) ||
+                    department.includes(keyword) ||
+                    contractType.includes(keyword) ||
+                    hasMatchingStatus
+                ) {
+                    row.style.display = 'table-row';
+                    if (detailsRow.classList.contains('details-row')) {
+                        detailsRow.style.display = detailsRow.style.display === 'table-row' ? 'table-row' : 'none';
+                    }
+                } else {
+                    row.style.display = 'none';
+                    if (detailsRow.classList.contains('details-row')) {
+                        detailsRow.style.display = 'none';
+                    }
+                }
+            });
+        });
+
+        // Chức năng mở rộng/thu gọn chi tiết
+        document.querySelectorAll('.toggle-details').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const employeeRow = this.closest('tr');
+                const detailsRow = employeeRow.nextElementSibling;
+
+                if (detailsRow.style.display === 'none' || detailsRow.style.display === '') {
+                    detailsRow.style.display = 'table-row';
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i> Ẩn chi tiết';
+                } else {
+                    detailsRow.style.display = 'none';
+                    this.innerHTML = '<i class="fas fa-eye"></i> Xem chi tiết';
+                }
+            });
+        });
+
+        // Chức năng xóa hợp đồng (giả lập)
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const recordId = this.dataset.recordId;
+                const [employeeId] = recordId.split('-');
+                const row = this.closest('tr');
+                const detailsTableBody = row.parentElement;
+                const employeeRow = document.querySelector(`.employee-row[data-employee-id="${employeeId}"]`);
+
+                if (confirm('Bạn có chắc chắn muốn xóa hợp đồng này?')) {
+                    alert('Xóa hợp đồng thành công! (Đây là thông báo giả lập)');
+                    row.remove();
+
+                    const remainingRows = detailsTableBody.querySelectorAll('tr').length;
+                    if (remainingRows === 0) {
+                        employeeRow.cells[2].textContent = 'Không có'; // Đặt loại hợp đồng về trống nếu không còn bản ghi
+                        const detailsRow = employeeRow.nextElementSibling;
+                        detailsRow.style.display = 'none';
+                        employeeRow.querySelector('.toggle-details').innerHTML = '<i class="fas fa-eye"></i> Xem chi tiết';
+                    }
+                }
+            });
+        });
+    </script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+        }
+        .status {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        .status.active {
+            background-color: #2ecc71;
+            color: white;
+        }
+        .status.inactive {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .action-link {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #3498db;
+        }
+        .action-link:hover {
+            text-decoration: underline;
+        }
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            background-color: #f9f9f9;
+        }
+        .details-table th, .details-table td {
+            padding: 8px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .details-table th {
+            background-color: #ececec;
+            font-weight: 500;
+        }
+    </style>
+</body>
+</html>

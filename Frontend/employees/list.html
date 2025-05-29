@@ -19,7 +19,7 @@
             <div class="dashboard-title">
                 <h2>Danh Sách Nhân Viên</h2>
                 <a href="./add.html" class="view-all" style="margin-left: 20px;">
-                    <i class="fas fa-user-plus"></i> Thêm Nhân Viên
+                    <i class="fas fa-plus"></i> Thêm Nhân Viên
                 </a>
             </div>
             
@@ -28,7 +28,7 @@
                     <h3>Danh sách nhân viên</h3>
                     <div class="search-bar" style="width: 250px;">
                         <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Tìm kiếm nhân viên..." id="listSearch">
+                        <input type="text" placeholder="Tìm kiếm nhân viên..." id="employeeSearch">
                     </div>
                 </div>
                 <div class="employees-list">
@@ -37,50 +37,108 @@
                             <tr>
                                 <th>Họ Tên</th>
                                 <th>Phòng Ban</th>
-                                <th>Ngày Bắt Đầu</th>
-                                <th>Trạng Thái</th>
+                                <th>Chức Vụ</th>
                                 <th>Hành Động</th>
                             </tr>
                         </thead>
                         <tbody id="employeeTableBody">
-                            <tr>
+                            <tr class="employee-row" data-employee-id="1">
                                 <td>Nguyễn Thành</td>
                                 <td>Phòng Kỹ thuật</td>
-                                <td>15/05/2025</td>
-                                <td><span class="status active">Hoạt động</span></td>
+                                <td>Kỹ sư</td>
                                 <td>
-                                    <a href="./edit.html?id=1" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
-                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" id="delete-1"><i class="fas fa-trash"></i> Xóa</a>
+                                    <a href="#" class="action-link toggle-details"><i class="fas fa-eye"></i> Xem chi tiết</a>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr class="details-row" style="display: none;">
+                                <td colspan="4">
+                                    <table class="details-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Số Điện Thoại</th>
+                                                <th>Email</th>
+                                                <th>Địa Chỉ</th>
+                                                <th>Hành Động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>0987654321</td>
+                                                <td>nguyen.thanh@example.com</td>
+                                                <td>Hà Nội</td>
+                                                <td>
+                                                    <a href="./edit.html?recordId=1-1" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
+                                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" data-record-id="1-1"><i class="fas fa-trash"></i> Xóa</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="employee-row" data-employee-id="2">
                                 <td>Trần Lan</td>
                                 <td>Phòng Nhân sự</td>
-                                <td>10/05/2025</td>
-                                <td><span class="status active">Hoạt động</span></td>
+                                <td>Chuyên viên</td>
                                 <td>
-                                    <a href="./edit.html?id=2" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
-                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" id="delete-2"><i class="fas fa-trash"></i> Xóa</a>
+                                    <a href="#" class="action-link toggle-details"><i class="fas fa-eye"></i> Xem chi tiết</a>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr class="details-row" style="display: none;">
+                                <td colspan="4">
+                                    <table class="details-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Số Điện Thoại</th>
+                                                <th>Email</th>
+                                                <th>Địa Chỉ</th>
+                                                <th>Hành Động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>0912345678</td>
+                                                <td>tran.lan@example.com</td>
+                                                <td>TP.HCM</td>
+                                                <td>
+                                                    <a href="./edit.html?recordId=2-1" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
+                                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" data-record-id="2-1"><i class="fas fa-trash"></i> Xóa</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr class="employee-row" data-employee-id="3">
                                 <td>Ngô Huy</td>
                                 <td>Phòng Marketing</td>
-                                <td>05/05/2025</td>
-                                <td><span class="status inactive">Nghỉ phép</span></td>
+                                <td>Nhân viên</td>
                                 <td>
-                                    <a href="./edit.html?id=3" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
-                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" id="delete-3"><i class="fas fa-trash"></i> Xóa</a>
+                                    <a href="#" class="action-link toggle-details"><i class="fas fa-eye"></i> Xem chi tiết</a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>Vũ Phương</td>
-                                <td>Phòng Kinh doanh</td>
-                                <td>01/05/2025</td>
-                                <td><span class="status active">Hoạt động</span></td>
-                                <td>
-                                    <a href="./edit.html?id=4" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
-                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" id="delete-4"><i class="fas fa-trash"></i> Xóa</a>
+                            <tr class="details-row" style="display: none;">
+                                <td colspan="4">
+                                    <table class="details-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Số Điện Thoại</th>
+                                                <th>Email</th>
+                                                <th>Địa Chỉ</th>
+                                                <th>Hành Động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>0932145678</td>
+                                                <td>ngo.huy@example.com</td>
+                                                <td>Đà Nẵng</td>
+                                                <td>
+                                                    <a href="./edit.html?recordId=3-1" class="action-link"><i class="fas fa-edit"></i> Sửa</a>
+                                                    <a href="#" class="action-link delete-btn" style="color: #e74c3c;" data-record-id="3-1"><i class="fas fa-trash"></i> Xóa</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </td>
                             </tr>
                         </tbody>
@@ -98,10 +156,10 @@
         // Hàm chuẩn hóa chuỗi để bỏ dấu
         function removeDiacritics(str) {
             return str
-                .normalize('NFD') // Tách ký tự thành ký tự cơ bản và dấu
-                .replace(/[\u0300-\u036f]/g, '') // Xóa các ký tự dấu
-                .replace(/đ/g, 'd') // Thay 'đ' thành 'd'
-                .replace(/Đ/g, 'D'); // Thay 'Đ' thành 'D'
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd')
+                .replace(/Đ/g, 'D');
         }
 
         // Tải header và sidebar
@@ -112,7 +170,6 @@
             })
             .then(data => {
                 document.getElementById('header').innerHTML = data;
-                // Ẩn thanh tìm kiếm trong header trên trang này
                 const globalSearchContainer = document.getElementById('globalSearchContainer');
                 if (globalSearchContainer) {
                     globalSearchContainer.style.display = 'none';
@@ -127,7 +184,6 @@
             })
             .then(data => {
                 document.getElementById('sidebar').innerHTML = data;
-                // Khởi tạo lại sự kiện sau khi sidebar được tải
                 if (window.initializeSidebarEvents) {
                     initializeSidebarEvents();
                 }
@@ -135,24 +191,54 @@
             .catch(err => console.error('Lỗi tải sidebar:', err.message));
 
         // Chức năng tìm kiếm
-        document.getElementById('listSearch').addEventListener('input', function() {
+        document.getElementById('employeeSearch').addEventListener('input', function() {
             const keyword = removeDiacritics(this.value.trim().toLowerCase());
-            const rows = document.querySelectorAll('tbody tr');
+            const rows = document.querySelectorAll('.employee-row');
 
             rows.forEach(row => {
-                const fullName = removeDiacritics(row.cells[0].textContent.toLowerCase()); // Cột Họ Tên
-                const department = removeDiacritics(row.cells[1].textContent.toLowerCase()); // Cột Phòng Ban
-                const status = removeDiacritics(row.cells[3].textContent.toLowerCase()); // Cột Trạng Thái
+                const fullName = removeDiacritics(row.cells[0].textContent.toLowerCase());
+                const department = removeDiacritics(row.cells[1].textContent.toLowerCase());
+                const position = removeDiacritics(row.cells[2].textContent.toLowerCase());
 
-                // Kiểm tra nếu từ khóa có trong Họ Tên, Phòng Ban hoặc Trạng Thái
+                const detailsRow = row.nextElementSibling;
+                const phone = detailsRow.querySelector('td:nth-child(1)')?.textContent.toLowerCase() || '';
+                const email = detailsRow.querySelector('td:nth-child(2)')?.textContent.toLowerCase() || '';
+                const address = removeDiacritics(detailsRow.querySelector('td:nth-child(3)')?.textContent.toLowerCase() || '');
+
                 if (
                     fullName.includes(keyword) ||
                     department.includes(keyword) ||
-                    status.includes(keyword)
+                    position.includes(keyword) ||
+                    phone.includes(keyword) ||
+                    email.includes(keyword) ||
+                    address.includes(keyword)
                 ) {
-                    row.style.display = 'table-row'; // Hiển thị hàng khớp
+                    row.style.display = 'table-row';
+                    if (detailsRow.classList.contains('details-row')) {
+                        detailsRow.style.display = detailsRow.style.display === 'table-row' ? 'table-row' : 'none';
+                    }
                 } else {
-                    row.style.display = 'none'; // Ẩn hàng không khớp
+                    row.style.display = 'none';
+                    if (detailsRow.classList.contains('details-row')) {
+                        detailsRow.style.display = 'none';
+                    }
+                }
+            });
+        });
+
+        // Chức năng mở rộng/thu gọn chi tiết
+        document.querySelectorAll('.toggle-details').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const employeeRow = this.closest('tr');
+                const detailsRow = employeeRow.nextElementSibling;
+
+                if (detailsRow.style.display === 'none' || detailsRow.style.display === '') {
+                    detailsRow.style.display = 'table-row';
+                    this.innerHTML = '<i class="fas fa-eye-slash"></i> Ẩn chi tiết';
+                } else {
+                    detailsRow.style.display = 'none';
+                    this.innerHTML = '<i class="fas fa-eye"></i> Xem chi tiết';
                 }
             });
         });
@@ -161,26 +247,22 @@
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
-                const employeeId = this.id.split('-')[1]; // Lấy id từ id="delete-1" -> 1
-                const row = this.closest('tr'); // Lấy hàng <tr> chứa nút "Xóa"
+                const recordId = this.dataset.recordId;
+                const [employeeId] = recordId.split('-');
+                const row = this.closest('tr');
+                const detailsTableBody = row.parentElement;
+                const employeeRow = document.querySelector(`.employee-row[data-employee-id="${employeeId}"]`);
 
-                // Hiển thị thông báo xác nhận
                 if (confirm('Bạn có chắc chắn muốn xóa nhân viên này?')) {
-                    // Giả lập xóa nhân viên
                     alert('Xóa nhân viên thành công! (Đây là thông báo giả lập)');
-
-                    // Xóa hàng khỏi bảng
                     row.remove();
 
-                    // TODO: Trong tương lai, thay thế bằng gọi API để xóa nhân viên thực sự
-                    // Ví dụ:
-                    // fetch(`/api/employees/${employeeId}`, { method: 'DELETE' })
-                    //     .then(res => res.json())
-                    //     .then(data => {
-                    //         alert(data.message);
-                    //         row.remove();
-                    //     })
-                    //     .catch(err => console.error('Lỗi xóa nhân viên:', err));
+                    const remainingRows = detailsTableBody.querySelectorAll('tr').length;
+                    if (remainingRows === 0) {
+                        employeeRow.remove();
+                        const detailsRow = employeeRow.nextElementSibling;
+                        detailsRow.remove();
+                    }
                 }
             });
         });
@@ -200,19 +282,6 @@
             background-color: #f5f5f5;
             font-weight: 600;
         }
-        .status {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-        }
-        .status.active {
-            background-color: #2ecc71;
-            color: white;
-        }
-        .status.inactive {
-            background-color: #e74c3c;
-            color: white;
-        }
         .action-link {
             margin-right: 10px;
             text-decoration: none;
@@ -220,6 +289,20 @@
         }
         .action-link:hover {
             text-decoration: underline;
+        }
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            background-color: #f9f9f9;
+        }
+        .details-table th, .details-table td {
+            padding: 8px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .details-table th {
+            background-color: #ececec;
+            font-weight: 500;
         }
     </style>
 </body>

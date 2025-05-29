@@ -29,44 +29,44 @@
                 </div>
                 <div class="employees-form">
                     <div class="form-group">
-                        <label for="fullName">Họ và tên <span style="color: #e74c3c;">*</span></label>
-                        <input type="text" id="fullName" placeholder="Nhập họ và tên" required>
+                        <label for="fullName">Họ Tên <span style="color: #e74c3c;">*</span></label>
+                        <input type="text" id="fullName" required>
                         <span class="error-message" id="fullNameError"></span>
                     </div>
                     <div class="form-group">
-                        <label for="department">Phòng ban</label>
-                        <select id="department">
+                        <label for="department">Phòng Ban <span style="color: #e74c3c;">*</span></label>
+                        <select id="department" required>
                             <option value="">Chọn phòng ban</option>
                             <option value="Phòng Kỹ thuật">Phòng Kỹ thuật</option>
                             <option value="Phòng Nhân sự">Phòng Nhân sự</option>
                             <option value="Phòng Marketing">Phòng Marketing</option>
-                            <option value="Phòng Kinh doanh">Phòng Kinh doanh</option>
                         </select>
+                        <span class="error-message" id="departmentError"></span>
                     </div>
                     <div class="form-group">
-                        <label for="startDate">Ngày bắt đầu</label>
-                        <input type="date" id="startDate">
+                        <label for="position">Chức Vụ <span style="color: #e74c3c;">*</span></label>
+                        <input type="text" id="position" required>
+                        <span class="error-message" id="positionError"></span>
                     </div>
                     <div class="form-group">
-                        <label for="status">Trạng thái</label>
-                        <select id="status">
-                            <option value="Hoạt động">Hoạt động</option>
-                            <option value="Nghỉ phép">Nghỉ phép</option>
-                        </select>
+                        <label for="phone">Số Điện Thoại <span style="color: #e74c3c;">*</span></label>
+                        <input type="text" id="phone" required>
+                        <span class="error-message" id="phoneError"></span>
                     </div>
                     <div class="form-group">
                         <label for="email">Email <span style="color: #e74c3c;">*</span></label>
-                        <input type="email" id="email" placeholder="Nhập email" required>
+                        <input type="email" id="email" required>
                         <span class="error-message" id="emailError"></span>
                     </div>
                     <div class="form-group">
-                        <label for="phone">Số điện thoại</label>
-                        <input type="tel" id="phone" placeholder="Nhập số điện thoại">
+                        <label for="address">Địa Chỉ <span style="color: #e74c3c;">*</span></label>
+                        <input type="text" id="address" required>
+                        <span class="error-message" id="addressError"></span>
                     </div>
                     <div class="form-actions">
                         <button class="action-btn" id="submitBtn">
                             <div class="action-icon blue-bg">
-                                <i class="fas fa-user-plus"></i>
+                                <i class="fas fa-plus"></i>
                             </div>
                             <span>Thêm Nhân Viên</span>
                         </button>
@@ -92,7 +92,6 @@
             })
             .then(data => {
                 document.getElementById('header').innerHTML = data;
-                // Ẩn thanh tìm kiếm trong header trên trang này
                 const globalSearchContainer = document.getElementById('globalSearchContainer');
                 if (globalSearchContainer) {
                     globalSearchContainer.style.display = 'none';
@@ -122,19 +121,52 @@
             document.querySelectorAll('.error-message').forEach(error => error.textContent = '');
 
             // Kiểm tra họ tên
-            const fullName = document.getElementById('fullName').value.trim();
+            const fullName = document.getElementById('fullName').value;
             if (!fullName) {
-                document.getElementById('fullNameError').textContent = 'Họ và tên là bắt buộc';
+                document.getElementById('fullNameError').textContent = 'Vui lòng nhập họ tên';
+                isValid = false;
+            }
+
+            // Kiểm tra phòng ban
+            const department = document.getElementById('department').value;
+            if (!department) {
+                document.getElementById('departmentError').textContent = 'Vui lòng chọn phòng ban';
+                isValid = false;
+            }
+
+            // Kiểm tra chức vụ
+            const position = document.getElementById('position').value;
+            if (!position) {
+                document.getElementById('positionError').textContent = 'Vui lòng nhập chức vụ';
+                isValid = false;
+            }
+
+            // Kiểm tra số điện thoại
+            const phone = document.getElementById('phone').value;
+            const phoneRegex = /^[0-9]{10}$/;
+            if (!phone) {
+                document.getElementById('phoneError').textContent = 'Vui lòng nhập số điện thoại';
+                isValid = false;
+            } else if (!phoneRegex.test(phone)) {
+                document.getElementById('phoneError').textContent = 'Số điện thoại phải có 10 chữ số';
                 isValid = false;
             }
 
             // Kiểm tra email
-            const email = document.getElementById('email').value.trim();
+            const email = document.getElementById('email').value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!email) {
-                document.getElementById('emailError').textContent = 'Email là bắt buộc';
+                document.getElementById('emailError').textContent = 'Vui lòng nhập email';
                 isValid = false;
-            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                document.getElementById('emailError').textContent = 'Email không hợp lệ';
+            } else if (!emailRegex.test(email)) {
+                document.getElementById('emailError').textContent = 'Email không đúng định dạng';
+                isValid = false;
+            }
+
+            // Kiểm tra địa chỉ
+            const address = document.getElementById('address').value;
+            if (!address) {
+                document.getElementById('addressError').textContent = 'Vui lòng nhập địa chỉ';
                 isValid = false;
             }
 
