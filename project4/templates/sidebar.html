@@ -1,0 +1,53 @@
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h3>Quản lý nhân sự</h3>
+        <div class="sidebar-user">
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div class="user-info">
+                <strong>Admin</strong>
+                <span>Quản trị viên</span>
+            </div>
+        </div>
+    </div>
+    <div class="sidebar-menu">
+        <a class="menu-item" href="{{ url_for('home') }}">
+            <i class="fas fa-home"></i>
+            <span>Trang chủ</span>
+        </a>
+        <a class="menu-item" href="{{ url_for('api.nhanvien_list') }}">
+            <i class="fas fa-users"></i>
+            <span>Nhân viên</span>
+        </a>
+        <a class="menu-item" href="{{ url_for('phongban_list') }}">
+            <i class="fas fa-building"></i>
+            <span>Phòng ban</span>
+        </a>
+        <a class="menu-item" href="{{ url_for('chamcong_list') }}">
+            <i class="fas fa-calendar-check"></i>
+            <span>Chấm công</span>
+        </a>
+        <a class="menu-item" href="{{ url_for('luong_list') }}">
+            <i class="fas fa-money-bill-wave"></i>
+            <span>Lương</span>
+        </a>
+        <a class="menu-item" href="{{ url_for('danhgia_list') }}">
+            <i class="fas fa-star"></i>
+            <span>Đánh giá</span>
+        </a>
+        <a class="menu-item" href="{{ url_for('hopdong_list') }}">
+            <i class="fas fa-file-contract"></i>
+            <span>Hợp đồng</span>
+        </a>
+        <a class="menu-item" href="{{ url_for('donnghiphep_list') }}">
+            <i class="fas fa-calendar-minus"></i>
+            <span>Đơn nghỉ phép</span>
+        </a>
+        <a class="menu-item" href="{{ url_for('baocao') }}">
+            <i class="fas fa-chart-line"></i>
+            <span>Báo cáo</span>
+        </a>
+        
+    </div>
+</div>

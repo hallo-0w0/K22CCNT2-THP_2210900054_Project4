@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Sửa chấm công{% endblock %}
+{% block content %}
+<div class="container-fluid main-content">
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+        <div class="form-container" style="background: #fff; border-radius: 16px; padding: 40px 32px; max-width: 420px; width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.10);">
+            <h2 class="mb-4 text-center" style="font-weight: 700;">Sửa chấm công</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            <form method="post">
+                <div class="form-group mb-3">
+                    <label class="mb-1 fw-semibold">Nhân viên</label>
+                    <input type="text" class="form-control" value="{{ nhanviens|selectattr('MaNhanVien', 'equalto', chamcong.MaNhanVien)|map(attribute='HoTen')|first or '' }}" readonly tabindex="-1">
+                    <input type="hidden" name="MaNhanVien" value="{{ chamcong.MaNhanVien }}">
+                </div>
+                <div class="form-group mb-3">
+                    <label class="mb-1 fw-semibold">Phòng ban</label>
+                    <input type="text" class="form-control" value="{{ pb_map[chamcong.MaNhanVien|string] if pb_map and chamcong.MaNhanVien|string in pb_map else '' }}" readonly tabindex="-1">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="Ngay" class="mb-1 fw-semibold">Ngày</label>
+                    <input type="date" class="form-control" id="Ngay" name="Ngay" value="{{ chamcong.Ngay.strftime('%Y-%m-%d') if chamcong.Ngay else '' }}" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="GioVao" class="mb-1 fw-semibold">Giờ vào</label>
+                    <input type="time" class="form-control" id="GioVao" name="GioVao" value="{{ chamcong.GioVao.strftime('%H:%M') if chamcong.GioVao else '' }}" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="GioRa" class="mb-1 fw-semibold">Giờ ra</label>
+                    <input type="time" class="form-control" id="GioRa" name="GioRa" value="{{ chamcong.GioRa.strftime('%H:%M') if chamcong.GioRa else '' }}" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="TrangThai" class="mb-1 fw-semibold">Trạng thái</label>
+                    <select class="form-select" id="TrangThai" name="TrangThai" required>
+                        <option value="">-- Chọn trạng thái --</option>
+                        <option value="Đúng giờ" {% if chamcong.TrangThai|string == 'Đúng giờ' %}selected{% endif %}>Đúng giờ</option>
+                        <option value="Đi muộn" {% if chamcong.TrangThai|string == 'Đi muộn' %}selected{% endif %}>Đi muộn</option>
+                    </select>
+                </div>
+                <div class="form-actions d-flex justify-content-end gap-2">
+                    <button type="submit" class="btn btn-primary px-4">Lưu</button>
+                    <a href="{{ url_for('chamcong_list') }}" class="btn btn-cancel px-4">Hủy</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

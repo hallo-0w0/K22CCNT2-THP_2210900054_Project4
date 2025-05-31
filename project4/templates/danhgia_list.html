@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title %}Đánh giá{% endblock %}
+{% block content %}
+<div class="container-fluid main-content">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 16px;">
+        <a href="{{ url_for('add_danhgia') }}" class="btn btn-primary rounded-pill px-4 py-2 fw-bold" style="font-size: 17px;"> <i class="fas fa-plus"></i> Thêm đánh giá</a>
+        <div style="flex: 1;"><h2 style="margin:0;">Danh sách đánh giá</h2></div>
+        <div style="max-width:320px; width:100%;">
+            <input id="search-danhgia" type="text" placeholder="Tìm kiếm đánh giá..." style="width:100%; padding:8px 14px; border:1.5px solid #dbe3ec; border-radius:20px; font-size:15px;">
+        </div>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <table class="nhanvien-table" id="danhgia-table" style="width:100%; margin:0 auto; border-radius:18px; box-shadow:0 4px 24px rgba(0,0,0,0.10); overflow:hidden; background:#fff; border-collapse:collapse;">
+        <thead style="background:#f5f5f5; color:#222;">
+            <tr style="text-align:left; font-weight:bold; font-size:17px;">
+                <th style="padding:16px 10px;">Họ Tên</th>
+                <th style="padding:16px 10px;">Phòng Ban</th>
+                <th style="padding:16px 10px;">Hành Động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for nv in nhanviens %}
+            <tr class="nhanvien-row" style="font-size:15px; border-bottom:1.5px solid #e9ecef;">
+                <td style="padding:10px 8px;">{{ nv.HoTen }}</td>
+                <td style="padding:10px 8px;">{{ nv.TenPhongBan }}</td>
+                <td style="padding:10px 8px; text-align:center;">
+                    <a href="#" class="toggle-detail" data-nv="{{ nv.MaNhanVien }}" style="color:#3498db; text-decoration:none; font-weight:500;"><i class="fas fa-eye"></i> <span>Xem chi tiết</span></a>
+                </td>
+            </tr>
+            <tr class="detail-row" id="detail-{{ nv.MaNhanVien }}" style="display:none; background:#f9f9f9;">
+                <td colspan="3" style="padding:0;">
+                    <table style="width:100%; background:#f9f9f9; border-radius:12px;">
+                        <thead style="background:#22335a; color:#fff;">
+                            <tr style="text-align:center;">
+                                <th style="padding:10px 8px;">Tháng</th>
+                                <th style="padding:10px 8px;">Năm</th>
+                                <th style="padding:10px 8px;">Điểm số</th>
+                                <th style="padding:10px 8px;">Nhận xét</th>
+                                <th style="padding:10px 8px;">Xếp loại</th>
+                                <th style="padding:10px 8px;">Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for dg in nv.danhgia_list %}
+                            <tr style="text-align:center;">
+                                <td style="padding:8px 6px;">{{ dg.Thang }}</td>
+                                <td style="padding:8px 6px;">{{ dg.Nam }}</td>
+                                <td style="padding:8px 6px;">{{ dg.DiemSo }}</td>
+                                <td style="padding:8px 6px;">{{ dg.NhanXet }}</td>
+                                <td style="padding:8px 6px;">
+                                    <span class="badge bg-info" style="font-size:15px;">{{ dg.XepLoai }}</span>
+                                </td>
+                                <td style="padding:8px 6px;">
+                                    <a href="{{ url_for('edit_danhgia', id=dg.MaDanhGia) }}" class="btn-edit" style="padding:6px 8px; border-radius:50%; font-size:16px; display:inline-flex; align-items:center; justify-content:center; background:#3498db; color:#fff;"><i class="fas fa-edit"></i> Sửa</a>
+                                    <form method="POST" action="{{ url_for('delete_danhgia', id=dg.MaDanhGia) }}" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn xóa bản ghi đánh giá này?');">
+                                        <button type="submit" class="btn-delete" style="padding:6px 8px; border-radius:50%; font-size:16px; display:inline-flex; align-items:center; justify-content:center; background:#e74c3c; color:#fff; border:none;"><i class="fas fa-trash"></i> Xóa</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        document.querySelectorAll('.toggle-detail').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const id = this.getAttribute('data-nv');
+                const detailRow = document.getElementById('detail-' + id);
+                const span = this.querySelector('span');
+                if (detailRow.style.display === 'none') {
+                    detailRow.style.display = '';
+                    span.textContent = 'Ẩn chi tiết';
+                    this.querySelector('i').className = 'fas fa-eye-slash';
+                } else {
+                    detailRow.style.display = 'none';
+                    span.textContent = 'Xem chi tiết';
+                    this.querySelector('i').className = 'fas fa-eye';
+                }
+            });
+        });
+        document.getElementById('search-danhgia').addEventListener('input', function() {
+            var filter = this.value.toLowerCase();
+            var rows = document.querySelectorAll('#danhgia-table > tbody > tr.nhanvien-row');
+            rows.forEach(function(row) {
+                var text = row.innerText.toLowerCase();
+                row.style.display = text.includes(filter) ? '' : 'none';
+                var id = row.nextElementSibling && row.nextElementSibling.classList.contains('detail-row') ? row.nextElementSibling.id : null;
+                if (id) {
+                    document.getElementById(id).style.display = text.includes(filter) ? 'none' : 'none';
+                }
+            });
+        });
+    </script>
+</div>
+{% endblock %} 

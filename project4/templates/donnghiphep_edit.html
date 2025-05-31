@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Sửa đơn nghỉ phép</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap&subset=vietnamese" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body, input, button, select, textarea { font-family: 'Roboto', Arial, Helvetica, sans-serif; }
+        .form-container { background: #fff; border-radius: 10px; padding: 32px; max-width: 600px; margin: 32px auto; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 500; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; }
+        .form-actions { display: flex; justify-content: flex-end; gap: 12px; }
+        .btn { padding: 8px 20px; border: none; border-radius: 4px; font-size: 15px; cursor: pointer; }
+        .btn-primary { background: #3498db; color: #fff; }
+        .btn-primary:hover { background: #217dbb; }
+        .btn-cancel { background: #ccc; color: #333; }
+        .btn-cancel:hover { background: #999; }
+    </style>
+</head>
+<body>
+    <div class="container" style="display: flex; min-height: 100vh;">
+        {% include 'sidebar.html' %}
+        <div class="main-content" style="flex: 1; padding: 24px;">
+            <div class="form-container">
+                <h2>Sửa đơn nghỉ phép</h2>
+                <form method="POST">
+                    <div class="form-group">
+                        <label>Nhân viên</label>
+                        {% for nv in nhanviens %}
+                            {% if donnghiphep.MaNhanVien == nv.MaNhanVien %}
+                                <input type="text" value="{{ nv.HoTen }}" readonly class="form-control">
+                            {% endif %}
+                        {% endfor %}
+                        <input type="hidden" name="MaNhanVien" value="{{ donnghiphep.MaNhanVien }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày bắt đầu</label>
+                        <input type="date" name="NgayBatDau" value="{{ donnghiphep.NgayBatDau }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ngày kết thúc</label>
+                        <input type="date" name="NgayKetThuc" value="{{ donnghiphep.NgayKetThuc }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Lý do</label>
+                        <textarea name="LyDo" rows="2" required>{{ donnghiphep.LyDo }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Trạng thái</label>
+                        <select name="TrangThai" required>
+                            <option value="Chờ duyệt" {% if donnghiphep.TrangThai=='Chờ duyệt' %}selected{% endif %}>Chờ duyệt</option>
+                            <option value="Đã duyệt" {% if donnghiphep.TrangThai=='Đã duyệt' %}selected{% endif %}>Đã duyệt</option>
+                            <option value="Từ chối" {% if donnghiphep.TrangThai=='Từ chối' %}selected{% endif %}>Từ chối</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                        <a href="{{ url_for('donnghiphep_list') }}" class="btn btn-cancel">Hủy</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

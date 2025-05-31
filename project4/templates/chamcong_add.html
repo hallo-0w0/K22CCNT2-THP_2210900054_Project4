@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Thêm chấm công{% endblock %}
+{% block content %}
+<div class="container-fluid main-content">
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+        <div class="form-container" style="background: #fff; border-radius: 16px; padding: 40px 32px; max-width: 420px; width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.10);">
+            <h2 class="mb-4 text-center" style="font-weight: 700;">Thêm chấm công</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            <form method="post">
+                <div class="form-group mb-3">
+                    <label for="MaNhanVien" class="mb-1 fw-semibold">Nhân viên</label>
+                    <select class="form-select" id="MaNhanVien" name="MaNhanVien" required>
+                        <option value="">-- Chọn nhân viên --</option>
+                        {% for nv in nhanviens %}
+                        <option value="{{ nv.MaNhanVien }}">{{ nv.HoTen }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="TenPhongBan" class="mb-1 fw-semibold">Phòng ban</label>
+                    <input type="text" class="form-control" id="TenPhongBan" name="TenPhongBan" value="" readonly tabindex="-1">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="Ngay" class="mb-1 fw-semibold">Ngày</label>
+                    <input type="date" class="form-control" id="Ngay" name="Ngay" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="GioVao" class="mb-1 fw-semibold">Giờ vào</label>
+                    <input type="time" class="form-control" id="GioVao" name="GioVao" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="GioRa" class="mb-1 fw-semibold">Giờ ra</label>
+                    <input type="time" class="form-control" id="GioRa" name="GioRa" required>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="TrangThai" class="mb-1 fw-semibold">Trạng thái</label>
+                    <select class="form-select" id="TrangThai" name="TrangThai" required>
+                        <option value="">-- Chọn trạng thái --</option>
+                        <option value="Đúng giờ">Đúng giờ</option>
+                        <option value="Đi muộn">Đi muộn</option>
+                    </select>
+                </div>
+                <div class="form-actions d-flex justify-content-end gap-2">
+                    <button type="submit" class="btn btn-primary px-4">Lưu</button>
+                    <a href="{{ url_for('chamcong_list') }}" class="btn btn-cancel px-4">Hủy</a>
+                </div>
+            </form>
+            <script type="text/javascript">
+                const pbMap = {{ pb_map|tojson|safe }};
+                const nvSelect = document.getElementById('MaNhanVien');
+                const pbInput = document.getElementById('TenPhongBan');
+                nvSelect.addEventListener('change', function() {
+                    pbInput.value = pbMap[this.value] || '';
+                });
+            </script>
+        </div>
+    </div>
+</div>
+{% endblock %} 

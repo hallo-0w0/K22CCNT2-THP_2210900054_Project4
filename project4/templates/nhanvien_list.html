@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block title %}Nhân viên{% endblock %}
+{% block content %}
+<div class="container-fluid main-content">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 16px;">
+        <a href="{{ url_for('add_nhanvien') }}" class="btn btn-primary rounded-pill px-4 py-2 fw-bold" style="font-size: 17px;"> <i class="fas fa-plus"></i> Thêm nhân viên</a>
+        <div style="flex: 1;">
+            <h2 style="margin:0;">Danh sách nhân viên</h2>
+        </div>
+        <div style="max-width:320px; width:100%;">
+            <input id="search-nhanvien" type="text" placeholder="Tìm kiếm nhân viên..." style="width:100%; padding:8px 14px; border:1.5px solid #dbe3ec; border-radius:20px; font-size:15px;">
+        </div>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <table class="nhanvien-table" id="nhanvien-table" style="width:100%; margin:0 auto; border-radius:18px; box-shadow:0 4px 24px rgba(0,0,0,0.10); overflow:hidden; background:#fff; border-collapse:collapse;">
+        <thead style="background:#f5f5f5; color:#222;">
+            <tr style="text-align:left; font-weight:bold; font-size:17px;">
+                <th style="padding:16px 10px;">Mã NV</th>
+                <th style="padding:16px 10px;">Họ Tên</th>
+                <th style="padding:16px 10px;">Phòng Ban</th>
+                <th style="padding:16px 10px;">Chức Vụ</th>
+                <th style="padding:16px 10px;">Ngày Vào Làm</th>
+                <th style="padding:16px 10px;">Hành Động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for nv in nhanviens %}
+            <tr class="nhanvien-row" style="font-size:15px; border-bottom:1.5px solid #e9ecef;">
+                <td style="padding:10px 8px;">{{ nv.MaNhanVien }}</td>
+                <td style="padding:10px 8px;">{{ nv.HoTen }}</td>
+                <td style="padding:10px 8px;">{{ nv.TenPhongBan }}</td>
+                <td style="padding:10px 8px;">{{ nv.ChucVu }}</td>
+                <td style="padding:10px 8px;">{{ nv.NgayVaoLam.strftime('%d/%m/%Y') if nv.NgayVaoLam else '' }}</td>
+                <td style="padding:10px 8px; text-align:center;">
+                    <a href="#" class="toggle-detail" data-nv="{{ nv.MaNhanVien }}" style="color:#3498db; text-decoration:none; font-weight:500;"><i class="fas fa-eye"></i> <span>Xem chi tiết</span></a>
+                </td>
+            </tr>
+            <tr class="detail-row" id="detail-{{ nv.MaNhanVien }}" style="display:none; background:#f9f9f9;">
+                <td colspan="6" style="padding:0;">
+                    <table style="width:100%; background:#f9f9f9; border-radius:12px;">
+                        <thead style="background:#22335a; color:#fff;">
+                            <tr style="text-align:center;">
+                                <th style="padding:10px 8px;">Thông tin cá nhân</th>
+                                <th style="padding:10px 8px;">Thông tin liên hệ</th>
+                                <th style="padding:10px 8px;">Hành Động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding:12px;">
+                                    <div style="margin-bottom:8px;"><strong>Ngày sinh:</strong> {{ nv.NgaySinh.strftime('%d/%m/%Y') if nv.NgaySinh else '' }}</div>
+                                    <div style="margin-bottom:8px;"><strong>Giới tính:</strong> {{ nv.GioiTinh }}</div>
+                                    <div><strong>Địa chỉ:</strong> {{ nv.DiaChi }}</div>
+                                </td>
+                                <td style="padding:12px;">
+                                    <div style="margin-bottom:8px;"><strong>Số điện thoại:</strong> {{ nv.SoDienThoai }}</div>
+                                    <div><strong>Email:</strong> {{ nv.Email }}</div>
+                                </td>
+                                <td style="padding:12px; text-align:center; vertical-align:middle;">
+                                    <a href="{{ url_for('edit_nhanvien', id=nv.MaNhanVien) }}" class="btn-edit" style="padding:6px 12px; border-radius:4px; font-size:14px; display:inline-flex; align-items:center; justify-content:center; background:#3498db; color:#fff; margin-right:8px;"><i class="fas fa-edit"></i> Sửa</a>
+                                    <form method="POST" action="{{ url_for('delete_nhanvien', id=nv.MaNhanVien) }}" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn xóa nhân viên này?');">
+                                        <button type="submit" class="btn-delete" style="padding:6px 12px; border-radius:4px; font-size:14px; display:inline-flex; align-items:center; justify-content:center; background:#e74c3c; color:#fff; border:none;"><i class="fas fa-trash"></i> Xóa</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        document.querySelectorAll('.toggle-detail').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const id = this.getAttribute('data-nv');
+                const detailRow = document.getElementById('detail-' + id);
+                const span = this.querySelector('span');
+                if (detailRow.style.display === 'none') {
+                    detailRow.style.display = '';
+                    span.textContent = 'Ẩn chi tiết';
+                    this.querySelector('i').className = 'fas fa-eye-slash';
+                } else {
+                    detailRow.style.display = 'none';
+                    span.textContent = 'Xem chi tiết';
+                    this.querySelector('i').className = 'fas fa-eye';
+                }
+            });
+        });
+        document.getElementById('search-nhanvien').addEventListener('input', function() {
+            var filter = this.value.toLowerCase();
+            var rows = document.querySelectorAll('#nhanvien-table > tbody > tr.nhanvien-row');
+            rows.forEach(function(row) {
+                var text = row.innerText.toLowerCase();
+                var show = text.includes(filter);
+                row.style.display = show ? '' : 'none';
+                var detailRow = row.nextElementSibling;
+                if (detailRow && detailRow.classList.contains('detail-row')) {
+                    detailRow.style.display = 'none'; // Luôn ẩn chi tiết khi lọc
+                }
+            });
+        });
+    </script>
+</div>
+{% endblock %} 

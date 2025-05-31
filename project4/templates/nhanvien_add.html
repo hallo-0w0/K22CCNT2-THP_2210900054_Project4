@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Thêm nhân viên{% endblock %}
+{% block content %}
+<div class="container-fluid main-content">
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+        <div class="form-container" style="background: #fff; border-radius: 16px; padding: 40px 32px; max-width: 600px; width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.10);">
+            <h2 class="mb-4 text-center" style="font-weight: 700;">Thêm nhân viên</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            <form method="POST">
+                <div class="form-group mb-3">
+                    <label for="HoTen" class="mb-1 fw-semibold">Họ tên</label>
+                    <input type="text" class="form-control" id="HoTen" name="HoTen" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="NgaySinh" class="mb-1 fw-semibold">Ngày sinh</label>
+                    <input type="date" class="form-control" id="NgaySinh" name="NgaySinh" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="GioiTinh" class="mb-1 fw-semibold">Giới tính</label>
+                    <select class="form-select" id="GioiTinh" name="GioiTinh" required>
+                        <option value="">-- Chọn giới tính --</option>
+                        <option value="Nam">Nam</option>
+                        <option value="Nữ">Nữ</option>
+                        <option value="Khác">Khác</option>
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="NgayVaoLam" class="mb-1 fw-semibold">Ngày vào làm</label>
+                    <input type="date" class="form-control" id="NgayVaoLam" name="NgayVaoLam" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="DiaChi" class="mb-1 fw-semibold">Địa chỉ</label>
+                    <textarea class="form-control" id="DiaChi" name="DiaChi" required></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="SoDienThoai" class="mb-1 fw-semibold">Số điện thoại</label>
+                    <input type="tel" class="form-control" id="SoDienThoai" name="SoDienThoai" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="Email" class="mb-1 fw-semibold">Email</label>
+                    <input type="email" class="form-control" id="Email" name="Email" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="MaPhongBan" class="mb-1 fw-semibold">Phòng ban</label>
+                    <select class="form-select" id="MaPhongBan" name="MaPhongBan" required>
+                        <option value="">-- Chọn phòng ban --</option>
+                        {% for pb in phongbans %}
+                        <option value="{{ pb[0] }}">{{ pb[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="ChucVu" class="mb-1 fw-semibold">Chức vụ</label>
+                    <input type="text" class="form-control" id="ChucVu" name="ChucVu" required>
+                </div>
+                <div class="form-actions d-flex justify-content-end gap-2">
+                    <button type="submit" class="btn btn-primary px-4">Thêm</button>
+                    <a href="{{ url_for('nhanvien_list') }}" class="btn btn-cancel px-4">Hủy</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 
