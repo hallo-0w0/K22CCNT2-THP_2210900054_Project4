@@ -48,6 +48,15 @@
             <i class="fas fa-chart-line"></i>
             <span>Báo cáo</span>
         </a>
-        
+        {% if session['username'] %}
+        <a class="menu-item" href="{{ url_for('api.logout') }}">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Đăng xuất</span>
+        </a>
+        {% endif %}
+        <!-- <a class="menu-item" href="/#">
+            <i class="fas fa-cog"></i>
+            <span>Cài đặt</span>
+        </a> -->
     </div>
 </div>

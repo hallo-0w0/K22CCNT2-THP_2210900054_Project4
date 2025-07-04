@@ -26,6 +26,7 @@
             <tr style="text-align:left; font-weight:bold; font-size:17px;">
                 <th style="padding:16px 10px;">Họ Tên</th>
                 <th style="padding:16px 10px;">Phòng Ban</th>
+                <th style="padding:16px 10px;">Chức vụ</th>
                 <th style="padding:16px 10px; text-align:right;">Tổng lương</th>
                 <th style="padding:16px 10px; text-align:right;">Tổng phụ cấp</th>
                 <th style="padding:16px 10px; text-align:right;">Tổng khấu trừ</th>
@@ -37,6 +38,7 @@
             <tr class="nhanvien-row" style="font-size:15px; border-bottom:1.5px solid #e9ecef;">
                 <td style="padding:10px 8px;">{{ nv.HoTen }}</td>
                 <td style="padding:10px 8px;">{{ nv.TenPhongBan }}</td>
+                <td style="padding:10px 8px;">{{ nv.ChucVu }}</td>
                 <td style="padding:10px 8px; text-align:right;">{{ '{:,.0f}'.format(nv.tong_luong) }}</td>
                 <td style="padding:10px 8px; text-align:right;">{{ '{:,.0f}'.format(nv.tong_phucap) }}</td>
                 <td style="padding:10px 8px; text-align:right;">{{ '{:,.0f}'.format(nv.tong_khautru) }}</td>

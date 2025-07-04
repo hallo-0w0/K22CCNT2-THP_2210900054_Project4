@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Đăng nhập{% endblock %}
+{% block content %}
+<div class="container-fluid main-content">
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+        <div class="form-container" style="background: #fff; border-radius: 16px; padding: 40px 32px; max-width: 400px; width: 100%; box-shadow: 0 4px 24px rgba(0,0,0,0.10);">
+            <h2 class="mb-4 text-center" style="font-weight: 700;">Đăng nhập</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            <form method="POST">
+                <div class="form-group mb-3">
+                    <label for="username" class="mb-1 fw-semibold">Tên đăng nhập</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="password" class="mb-1 fw-semibold">Mật khẩu</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

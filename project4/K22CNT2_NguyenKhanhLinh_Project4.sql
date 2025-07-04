@@ -90,18 +90,56 @@ CREATE TABLE DonNghiPhep (
     FOREIGN KEY (MaNhanVien) REFERENCES NhanVien(MaNhanVien)
 );
 
+-- Bảng Role (Quyền)
+CREATE TABLE Role (
+    RoleID INT PRIMARY KEY IDENTITY(1,1),
+    RoleName NVARCHAR(50) NOT NULL -- (Admin, TruongPhong, NhanVien)
+);
+
+-- Bảng User (Tài khoản đăng nhập)
+CREATE TABLE [User] (
+    UserID INT PRIMARY KEY IDENTITY(1,1),
+    Username NVARCHAR(50) NOT NULL UNIQUE,
+    Email NVARCHAR(100),
+    PasswordHash NVARCHAR(255) NOT NULL,
+    MaNhanVien INT, -- Liên kết với nhân viên (nếu có)
+    RoleID INT NOT NULL,
+    FOREIGN KEY (MaNhanVien) REFERENCES NhanVien(MaNhanVien),
+    FOREIGN KEY (RoleID) REFERENCES Role(RoleID)
+);
+
 -- Chèn dữ liệu vào PhongBan
 INSERT INTO PhongBan (TenPhongBan, MoTa, TruongPhong)
 VALUES 
-('Phòng Kỹ Thuật', 'Quản lý kỹ thuật', NULL),
-('Phòng Nhân Sự', 'Quản lý nhân sự', NULL),
-('Phòng Kinh Doanh', 'Phát triển kinh doanh', NULL);
+(N'Phòng Kỹ Thuật', N'Quản lý kỹ thuật', NULL),
+(N'Phòng Nhân Sự', N'Quản lý nhân sự', NULL),
+(N'Phòng Kinh Doanh', N'Phát triển kinh doanh', NULL);
 
 -- Chèn dữ liệu vào NhanVien
 INSERT INTO NhanVien (HoTen, NgaySinh, GioiTinh, DiaChi, SoDienThoai, Email, MaPhongBan, ChucVu, NgayVaoLam)
 VALUES 
-(N'Nguyễn Văn A', '1985-05-15', 'Nam', '123 Đường ABC, Quận XYZ', '0987654321', 'nguyenvana@example.com', 1, 'Kỹ sư phần mềm', '2021-01-01'),
-('Trần Thị B', '1990-07-20', 'Nữ', '456 Đường DEF, Quận ABC', '0976543210', 'tranthib@example.com', 2, 'Nhân viên tuyển dụng', '2021-02-15');
+(N'Nguyễn Văn A', '1985-05-15', N'Nam', N'123 Đường ABC, Quận XYZ', '0987654321', 'nguyenvana@example.com', 1, N'Trưởng phòng', '2021-01-01'),
+(N'Lê Thị C', '1988-03-22', N'Nữ', N'789 Đường GHI, Quận DEF', '0912345678', 'lethic@example.com', 2, N'Trưởng phòng', '2020-06-10'),
+(N'Trần Thị B', '1990-07-20', N'Nữ', N'456 Đường DEF, Quận ABC', '0976543210', 'tranthib@example.com', 1, N'Nhân viên', '2021-02-15'),
+(N'Phạm Quốc Dũng', '1995-12-01', N'Nam', N'321 Đường XYZ, Quận GHI', '0901234567', 'phamquocdung@example.com', 2, N'Nhân viên', '2022-03-05');
+
+-- Thêm các quyền cơ bản
+INSERT INTO Role (RoleName) VALUES (N'Admin'), (N'TruongPhong'), (N'NhanVien');
+
+-- Thêm tài khoản admin mẫu (không gắn MaNhanVien)
+INSERT INTO [User] (Username, Email, PasswordHash, RoleID) VALUES 
+('admin', 'admin@example.com', 'admin123', 1);
+
+-- Thêm tài khoản trưởng phòng (MaNhanVien = 1, 2)
+INSERT INTO [User] (Username, Email, PasswordHash, MaNhanVien, RoleID) VALUES
+('NguyenVanA', 'nguyenvana@example.com', 'NguyenVanA123', 1, 2),
+('LeThiC', 'lethic@example.com', 'LeThiC123', 2, 2);
+
+-- Thêm tài khoản nhân viên (MaNhanVien = 3, 4)
+INSERT INTO [User] (Username, Email, PasswordHash, MaNhanVien, RoleID) VALUES
+('TranThiB', 'tranthib@example.com', 'TranThiB123', 3, 3),
+('PhamQuocDung', 'phamquocdung@example.com', 'PhamQuocDung123', 4, 3);
+
 -- Chèn dữ liệu vào ChamCong
 INSERT INTO ChamCong (MaNhanVien, Ngay, GioVao, GioRa)
 VALUES 
@@ -117,20 +155,20 @@ VALUES
 -- Chèn dữ liệu vào DanhGia
 INSERT INTO DanhGia (MaNhanVien, KyDanhGia, DiemSo, NhanXet)
 VALUES 
-(1, 'Quý 4 2023', 90, 'Hoàn thành tốt công việc'),
-(2, 'Quý 4 2023', 85, 'Năng động, tích cực');
+(1, N'Quý 4 2023', 90, N'Hoàn thành tốt công việc'),
+(2, N'Quý 4 2023', 85, N'Năng động, tích cực');
 
 -- Chèn dữ liệu vào HopDong
 INSERT INTO HopDong (MaNhanVien, LoaiHopDong, NgayBatDau, NgayKetThuc, LuongCoBan, PhuCap, TrangThai)
 VALUES 
-(1, 'Hợp đồng lao động 1 năm', '2024-01-01', '2024-12-31', 10000000, 2000000, 'Đang hiệu lực'),
-(2, 'Hợp đồng thử việc', '2024-02-01', '2024-04-30', 7000000, 1000000, 'Đang hiệu lực');
+(1, N'Hợp đồng lao động 1 năm', '2024-01-01', '2024-12-31', 10000000, 2000000, N'Đang hiệu lực'),
+(2, N'Hợp đồng thử việc', '2024-02-01', '2024-04-30', 7000000, 1000000, N'Đang hiệu lực');
 
 -- Chèn dữ liệu vào DonNghiPhep
 INSERT INTO DonNghiPhep (MaNhanVien, NgayBatDau, NgayKetThuc, LyDo, TrangThai)
 VALUES 
-(1, '2024-03-10', '2024-03-12', 'Nghỉ ốm', 'Đã duyệt'),
-(2, '2024-04-15', '2024-04-20', 'Về quê có việc gia đình', 'Chờ duyệt');
+(1, '2024-03-10', '2024-03-12', N'Nghỉ ốm', N'Đã duyệt'),
+(2, '2024-04-15', '2024-04-20', N'Về quê có việc gia đình', N'Chờ duyệt');
 
 -- Kiểm tra dữ liệu đã chèn
 SELECT * FROM NhanVien;
